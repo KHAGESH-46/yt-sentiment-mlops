@@ -1,0 +1,36 @@
+HOW TO INSTALL & TEST (2 minutes)
+=================================
+
+1. Unzip this folder somewhere permanent (e.g. Documents/yt-extension).
+   Keep the folder — Chrome loads it from disk.
+
+2. Open Chrome -> go to:  chrome://extensions
+   - Turn ON "Developer mode" (top-right toggle)
+   - Click "Load unpacked" -> select THIS folder (the one with manifest.json)
+
+3. Connect it to a sentiment API (pick ONE):
+
+   OPTION A - use the live sandbox API (zero setup):
+   - Copy the preview URL of the running API (the https://8000-....e2b.app
+     address shown in the workspace preview panel)
+   - Click the extension icon -> paste it into "API base" (no trailing slash)
+
+   OPTION B - run the backend on your own machine:
+   - Download the full project (yt-sentiment-mlops-full.zip)
+   - pip install -r requirements.txt
+   - uvicorn api.main:app --reload     (localhost:8000 is already the default)
+
+4. Open ANY YouTube video (fresh reload if it was already open).
+   Scroll the comments -> a badge appears next to each author:
+       😊 positive · 😐 neutral · 😡 negative
+       a dash "-" = API unreachable
+
+5. Hover a badge to see label %, confidence and model version.
+
+TROUBLESHOOTING
+----------------
+- Badges stuck on "..." : API not responding. Check the API base in the popup.
+- All badges "-"        : API unreachable (wrong URL / server down).
+- Nothing appears       : reload the video page AFTER loading the extension;
+                          check chrome://extensions -> service worker "Errors".
+- After editing files   : click the refresh icon on chrome://extensions, then reload YouTube.

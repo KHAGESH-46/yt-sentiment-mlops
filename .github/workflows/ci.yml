@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install deps
+        run: pip install -r requirements.txt ruff
+      - name: Lint
+        run: ruff check src api tests
+      - name: Tests
+        run: pytest -q
+        env:
+          MODEL_BACKEND: dummy # keep CI fast — no torch/HF download in tests
+      - name: Docker build check
+        run: docker build -t yt-sentiment-api:ci .

@@ -1,0 +1,15 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_PATH=/data/predictions.db
+    volumes:
+      - api_data:/data
+    # env_file: .env   # uncomment if serving reads MLflow/other secrets
+  # Phase 6+: add redis for a shared cache across replicas
+  # redis:
+  #   image: redis:7-alpine
+volumes:
+  api_data:

@@ -1,0 +1,36 @@
+# ============================================================
+# ALL pipeline configuration lives here (single source of truth)
+# ============================================================
+
+data:
+  raw_path: data/raw/comments.csv
+  processed_dir: data/processed
+  min_rows: 500            # validation gate (raise to 20000+ for real training)
+  video_ids:               # pick 10-20 popular videos across categories
+    - "dQw4w9WgXcQ"
+    - "9bZkp7q19f0"
+    - "kJQP7kiw5Fk"
+
+ingestion:
+  max_comments_per_video: 500
+  quota_budget_units: 8000   # daily free quota is ~10000; keep headroom
+
+prepare:
+  min_text_len: 2
+  max_text_len: 500
+  val_size: 0.1
+  test_size: 0.1
+
+train:
+  model_type: tfidf_logreg   # tfidf_logreg | distilbert (later)
+  tfidf_max_features: 50000
+  logreg_c: 4.0
+  random_state: 42
+
+evaluate:
+  min_macro_f1: 0.40         # GATE: weak labels are noisy -> keep low for now,
+                             # raise to 0.75 once real labeled data is in
+
+serve:
+  model_path: models/model.joblib
+  model_version: "0.1.0"

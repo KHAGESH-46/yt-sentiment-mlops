@@ -1,0 +1,56 @@
+# dvc.yaml — one command (`dvc repro`) runs the whole pipeline.
+# Each stage declares deps/params so DVC only re-runs what changed.
+stages:
+  ingest:
+    cmd: python src/ingestion.py
+    deps:
+      - src/ingestion.py
+      - params.yaml
+    params:
+      - data
+      - ingestion
+    outs:
+      - data/raw/comments.csv
+
+  validate:
+    cmd: python src/validate.py
+    deps:
+      - src/validate.py
+      - data/raw/comments.csv
+    params:
+      - data
+
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+      - src/prepare.py
+      - data/raw/comments.csv
+    params:
+      - data
+      - prepare
+    outs:
+      - data/processed/
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - src/train.py
+      - data/processed/train.csv
+      - data/processed/val.csv
+    params:
+      - train
+    outs:
+      - models/model.joblib
+    metrics:
+      - models/metrics.json
+
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - models/model.joblib
+      - data/processed/test.csv
+    params:
+      - evaluate
+    metrics:
+      - models/eval_metrics.json

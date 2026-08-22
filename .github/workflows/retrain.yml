@@ -1,0 +1,31 @@
+name: Weekly retrain
+
+on:
+  schedule:
+    - cron: "0 3 * * 1" # every Monday 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Retrain with feedback-augmented data
+        run: |
+          # TODO (Phase 6) — implement in this order:
+          #  1. Download feedback rows from the API DB (or object storage export).
+          #  2. Keep only confident, deduped corrections; merge into
+          #     data/processed/train.csv (original data + validated feedback).
+          #  3. Run the gated pipeline:
+          #        python src/train.py && python src/evaluate.py
+          #     evaluate.py FAILS the job if the new model doesn't beat the gate.
+          #  4. If the gate passes: promote the new model to "Production" in the
+          #     MLflow registry, tag a release -> deploy.yml builds & deploys it.
+          #  5. If the gate fails: do nothing (current model stays in prod).
+          echo "Phase 6 skeleton — wire feedback download + merge + gate here."

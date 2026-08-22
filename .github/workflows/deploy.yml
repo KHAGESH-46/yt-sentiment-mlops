@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # NOTE: GHCR requires lowercase image names — lowercase repo name if needed.
+      - name: Build & push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+      # TODO (Phase 5 completion):
+      #  1. Before docker build, pull the "Production" model from the MLflow
+      #     registry into models/model.joblib (mlflow artifacts download).
+      #  2. Trigger the actual deployment, e.g. Render deploy hook:
+      #     run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+      #  3. Smoke test the live API:
+      #     run: curl -fsS "$URL/health" | grep '"status":"ok"'

@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { font-family: Roboto, Arial, sans-serif; width: 280px; padding: 12px; }
+      h1 { font-size: 14px; margin: 0 0 8px; }
+      .row { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; }
+      input[type="text"] { width: 100%; box-sizing: border-box; padding: 6px; }
+      .muted { color: #5f6368; font-size: 11px; }
+      .diag { background: #f8f9fa; border-radius: 8px; padding: 8px; font-size: 11px; margin-top: 10px; }
+      .diag b { color: #202124; }
+      .err { color: #c5221f; margin-top: 4px; word-break: break-all; }
+      .ok { color: #137333; }
+      button { padding: 6px 10px; margin-top: 6px; }
+      b { margin-left: auto; }
+    </style>
+  </head>
+  <body>
+    <h1>YT Comment Sentiment <span class="muted" id="ver"></span></h1>
+    <div class="row"><label><input type="checkbox" id="enabled" /> Enabled</label></div>
+    <div>API base</div>
+    <input type="text" id="apiBase" placeholder="https://8000-xxxx.e2b.app" />
+    <button id="testApi">Test connection</button>
+    <div id="testResult" class="muted"></div>
+    <div class="row" style="margin-top: 10px"><span>Comments analyzed</span><b id="analyzed">0</b></div>
+    <div class="row"><span>Model version</span><b id="modelVersion">unknown</b></div>
+    <div class="diag">
+      <div>Diagnostic — comments detected: <b id="diagQueued">0</b></div>
+      <div>API errors: <span id="lastError">none</span></div>
+      <button id="clearCache">Clear cache</button>
+    </div>
+    <p class="muted">Badges appear next to YouTube comments once the API responds. "–" = API unreachable.</p>
+    <script src="popup.js"></script>
+  </body>
+</html>

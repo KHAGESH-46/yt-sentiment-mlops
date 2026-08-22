@@ -1,0 +1,6 @@
+{
+  "commentsSection": "#comments",
+  "commentThread": "ytd-comment-thread-renderer, ytd-comment-view-model",
+  "author": "#author-text",
+  "text": "#content-text"
+}

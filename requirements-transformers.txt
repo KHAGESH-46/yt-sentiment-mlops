@@ -1,0 +1,5 @@
+# Heavy deps for the REAL transformer backend (Phase-2 upgrade).
+# Install separately so the base stack stays light:
+#   pip install -r requirements.txt -r requirements-transformers.txt
+torch>=2.2
+transformers>=4.40
