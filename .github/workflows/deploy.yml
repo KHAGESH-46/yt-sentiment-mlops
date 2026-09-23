@@ -28,8 +28,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
+            ghcr.io/khagesh-46/yt-sentiment-mlops:latest
+            ghcr.io/khagesh-46/yt-sentiment-mlops:${{ github.sha }}
 
       # TODO (Phase 5 completion):
       #  1. Before docker build, pull the "Production" model from the MLflow
